@@ -1,0 +1,325 @@
+<!doctype html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Dataduaney</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/starter-template/">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <style>
+      body {
+        padding-top: 5rem;
+      }
+      .starter-template {
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      /* Monokai theme */
+      .editor {
+        font-family: monospace;
+        background-color: #272822;
+        color: #F8F8F2;
+      }
+
+
+
+    </style>
+
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #00563F;">
+      <a class="navbar-brand ml-3" href="index.html">
+        <img src="https://www.svgrepo.com/show/499835/data-report.svg" alt="" width="40" height="40" >
+        Dataduaney
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+<!--   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto ml-4">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="temperature.html">SQL Practice</a>
+          <a class="dropdown-item" href="temperature.html">Blogs</a>
+        </div>
+      </li>
+    </ul>
+  </div> -->
+</nav>
+<main role="main" class="container">
+  <h2 class="display-4 text-center mb-4">Hard Level</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Get the total number of items ordered by city</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body text-left">
+                  <pre class="editor">
+                    <code>
+                      SELECT c.City, COUNT(DISTINCT od.OrderID) FROM orderdetails od
+                      LEFT JOIN orders o ON od.orderid = o.orderid 
+                      LEFT JOIN customers c ON o.customerid = c.customerid
+                      GROUP BY c.city
+                      ORDER BY COUNT(od.Quantity) DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Get the cities in USA with the highest order quantities</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer2" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer2">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT c.city, sum(od.quantity) 
+                      FROM 
+                      (SELECT customerid, city FROM customers WHERE country='USA') c 
+                      LEFT JOIN orders o ON c.customerid = o.customerid
+                      LEFT JOIN orderdetails od ON o.orderid = od.orderid
+                      GROUP BY c.city
+                      ORDER BY count(o.orderid) DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the total number of quantities delivered by country</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer3" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer3">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        customers.country AS country, 
+                        SUM(orderdetails.quantity) AS total_delivered
+                      FROM orderdetails
+                      JOIN orders ON orderdetails.orderid = orders.orderid
+                      JOIN customers ON orders.customerid = customers.customerid
+                      GROUP BY customers.country
+                      ORDER BY total_delivered DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the total number of quantities delivered by city</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer4">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        customers.city AS city, SUM(orderdetails.quantity) AS total_delivered
+                      FROM orderdetails
+                      JOIN orders ON orderdetails.orderid = orders.orderid
+                      JOIN customers ON orders.customerid = customers.customerid
+                      GROUP BY customers.city
+                      ORDER BY total_delivered DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text"> Rank all products by country</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer5">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        customers.country, products.productname, COUNT(DISTINCT orderdetails.orderid) AS times_ordered,
+                          DENSE_RANK() OVER 
+                          (PARTITION BY customers.country 
+                          ORDER BY COUNT(DISTINCT orderdetails.orderid) DESC) AS rank_num
+                      FROM orderdetails
+                      JOIN products ON products.productid = orderdetails.productid
+                      JOIN orders ON orderdetails.orderid = orders.orderid
+                      JOIN customers ON orders.customerid = customers.customerid
+                      GROUP BY customers.country, products.productname
+                      ORDER BY customers.country;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the most ordered product for each country </p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer6" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer6">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT
+                        country_name, product_name, times_ordered
+                      FROM
+                      (
+                      SELECT 
+                        customers.country AS country_name, products.productname AS product_name, COUNT(DISTINCT orderdetails.orderid) AS times_ordered,
+                          DENSE_RANK() OVER (PARTITION BY customers.country ORDER BY COUNT(DISTINCT orderdetails.orderid) DESC) AS rank_num
+                      FROM orderdetails
+                      JOIN products ON products.productid = orderdetails.productid
+                      JOIN orders ON orderdetails.orderid = orders.orderid
+                      JOIN customers ON orders.customerid = customers.customerid
+                      GROUP BY customers.country, products.productname
+                      ) AS subquery
+                      WHERE rank_num = 1
+                      ORDER BY times_ordered DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the number of new customers for each month </p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer7" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer7">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) AS delivr_month,
+                          COUNT(DISTINCT CustomerID) AS new_regs
+                      FROM
+                        (
+                        SELECT
+                            CustomerID, MIN(OrderDate) AS first_order
+                        FROM orders
+                        GROUP BY CustomerID
+                        ) subquery
+                      GROUP BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1)
+                      ORDER BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) ASC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the running total of customers</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer8" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer8">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                          delivr_month, 
+                          SUM(new_regs) OVER (ORDER BY delivr_month ASC) AS regs_rt
+                      FROM (
+                          SELECT 
+                              DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) AS delivr_month, 
+                              COUNT(DISTINCT CustomerID) AS new_regs
+                          FROM (
+                              SELECT 
+                                  CustomerID, MIN(OrderDate) AS first_order
+                              FROM orders
+                              GROUP BY CustomerID
+                          ) subquery
+                          GROUP BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1)
+                      ) subquery_two
+                      ORDER BY delivr_month ASC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main><!-- /.container -->
+
+
+<script src="app.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

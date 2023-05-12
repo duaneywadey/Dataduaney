@@ -1,0 +1,291 @@
+<!doctype html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Dataduaney</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/starter-template/">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <style>
+      body {
+        padding-top: 5rem;
+      }
+      .starter-template {
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      /* Monokai theme */
+      .editor {
+        font-family: monospace;
+        background-color: #272822;
+        color: #F8F8F2;
+      }
+
+
+
+    </style>
+
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #00563F;">
+      <a class="navbar-brand ml-3" href="index.html">
+        <img src="https://www.svgrepo.com/show/499835/data-report.svg" alt="" width="40" height="40" >
+        Dataduaney
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+<!--   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto ml-4">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="temperature.html">SQL Practice</a>
+          <a class="dropdown-item" href="temperature.html">Blogs</a>
+        </div>
+      </li>
+    </ul>
+  </div> -->
+</nav>
+<main role="main" class="container">
+  <h2 class="display-4 text-center mb-4">Medium Level</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Get the total number of orders each country made</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body text-left">
+                  <pre class="editor">
+                    <code>
+                      SELECT c.country AS Country, COUNT(*) AS OrderCount FROM orders o
+                      LEFT JOIN customers c ON o.customerid = c.customerid
+                      GROUP BY Country
+                      ORDER BY OrderCount DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the most hardwordking employees</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer2" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer2">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        employees.firstname, employees.lastname,
+                        COUNT(DISTINCT orders.orderid) AS total_processed
+                      FROM employees
+                      LEFT JOIN orders ON employees.employeeid = orders.employeeid
+                      GROUP BY employees.firstname, employees.lastname
+                      ORDER BY COUNT(orders.orderid) DESC
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Get the total number of orders per month.</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer3" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer3">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS delivr_month,
+                          COUNT(DISTINCT OrderID) AS orders
+                      FROM orders
+                      GROUP BY DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)
+                      ORDER BY delivr_month ASC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the total number of items sold by product name</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer4">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        products.productname AS product_name, SUM(orderdetails.quantity) AS total_sold
+                      FROM orderdetails
+                      JOIN products ON orderdetails.productid = products.productid
+                      GROUP BY products.productname
+                      ORDER BY total_sold DESC;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Select products with prices less than the average</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer5">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT ProductName, Price 
+                      FROM Products
+                      WHERE Price < (SELECT AVG(Price) FROM Products);
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find the customers who never made an order</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer6" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer6">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        customers.customername AS name, 
+                        customers.country AS country, 
+                        customers.city AS city, 
+                        COUNT(orders.orderid) AS total_orders
+                      FROM customers 
+                      LEFT JOIN orders ON orders.customerid = customers.customerid 
+                      GROUP BY customers.customername, customers.country, customers.city 
+                      HAVING COUNT(orders.orderid) = 0;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Rank products based on the total number of orders.</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer7" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer7">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT 
+                        DENSE_RANK() OVER(ORDER BY COUNT(DISTINCT OrderID) DESC) AS rank_num,
+                          Products.ProductName,
+                          Products.ProductID, 
+                          COUNT(DISTINCT OrderID) AS total_orders
+                      FROM OrderDetails
+                      JOIN Products ON OrderDetails.ProductID = Products.ProductID
+                      GROUP BY Products.ProductID, Products.ProductName;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body">
+          <p class="card-text">Find all the customers' first date of order</p>
+          <button class="btn btn-primary float-right" type="button" data-toggle="collapse" data-target="#answer8" aria-expanded="false" aria-controls="answer">Show Answer</button>
+          <div class="collapse" id="answer8">
+            <div class="answerpanel mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <pre class="editor">
+                    <code>
+                      SELECT
+                        CustomerID, MIN(OrderDate) AS first_order
+                      FROM orders
+                      GROUP BY CustomerID;
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main><!-- /.container -->
+
+
+<script src="app.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
