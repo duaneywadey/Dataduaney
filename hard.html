@@ -91,13 +91,13 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body text-left">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT c.City, COUNT(DISTINCT od.OrderID) FROM orderdetails od
-                      LEFT JOIN orders o ON od.orderid = o.orderid 
-                      LEFT JOIN customers c ON o.customerid = c.customerid
-                      GROUP BY c.city
-                      ORDER BY COUNT(od.Quantity) DESC;
+  SELECT c.City, COUNT(DISTINCT od.OrderID) FROM orderdetails od
+  LEFT JOIN orders o ON od.orderid = o.orderid 
+  LEFT JOIN customers c ON o.customerid = c.customerid
+  GROUP BY c.city
+  ORDER BY COUNT(od.Quantity) DESC;
                     </code>
                   </pre>
                 </div>
@@ -114,15 +114,15 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT c.city, sum(od.quantity) 
-                      FROM 
-                      (SELECT customerid, city FROM customers WHERE country='USA') c 
-                      LEFT JOIN orders o ON c.customerid = o.customerid
-                      LEFT JOIN orderdetails od ON o.orderid = od.orderid
-                      GROUP BY c.city
-                      ORDER BY count(o.orderid) DESC;
+  SELECT c.city, sum(od.quantity) 
+  FROM 
+  (SELECT customerid, city FROM customers WHERE country='USA') c 
+  LEFT JOIN orders o ON c.customerid = o.customerid
+  LEFT JOIN orderdetails od ON o.orderid = od.orderid
+  GROUP BY c.city
+  ORDER BY count(o.orderid) DESC;
                     </code>
                   </pre>
                 </div>
@@ -139,16 +139,16 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT 
-                        customers.country AS country, 
-                        SUM(orderdetails.quantity) AS total_delivered
-                      FROM orderdetails
-                      JOIN orders ON orderdetails.orderid = orders.orderid
-                      JOIN customers ON orders.customerid = customers.customerid
-                      GROUP BY customers.country
-                      ORDER BY total_delivered DESC;
+  SELECT 
+    customers.country AS country, 
+    SUM(orderdetails.quantity) AS total_delivered
+  FROM orderdetails
+  JOIN orders ON orderdetails.orderid = orders.orderid
+  JOIN customers ON orders.customerid = customers.customerid
+  GROUP BY customers.country
+  ORDER BY total_delivered DESC;
                     </code>
                   </pre>
                 </div>
@@ -165,23 +165,22 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
-                    <code>
-                      SELECT 
-                        customers.city AS city, SUM(orderdetails.quantity) AS total_delivered
-                      FROM orderdetails
-                      JOIN orders ON orderdetails.orderid = orders.orderid
-                      JOIN customers ON orders.customerid = customers.customerid
-                      GROUP BY customers.city
-                      ORDER BY total_delivered DESC;
-                    </code>
-                  </pre>
+                  <pre class="editor language-sql"><code>
+  SELECT 
+    customers.city AS city, SUM(orderdetails.quantity) AS total_delivered
+  FROM orderdetails
+  JOIN orders ON orderdetails.orderid = orders.orderid
+  JOIN customers ON orders.customerid = customers.customerid
+  GROUP BY customers.city
+  ORDER BY total_delivered DESC;
+                  </code></pre>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="card mt-4">
         <div class="card-body">
           <p class="card-text"> Rank all products by country</p>
@@ -190,19 +189,19 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT 
-                        customers.country, products.productname, COUNT(DISTINCT orderdetails.orderid) AS times_ordered,
-                          DENSE_RANK() OVER 
-                          (PARTITION BY customers.country 
-                          ORDER BY COUNT(DISTINCT orderdetails.orderid) DESC) AS rank_num
-                      FROM orderdetails
-                      JOIN products ON products.productid = orderdetails.productid
-                      JOIN orders ON orderdetails.orderid = orders.orderid
-                      JOIN customers ON orders.customerid = customers.customerid
-                      GROUP BY customers.country, products.productname
-                      ORDER BY customers.country;
+  SELECT 
+    customers.country, products.productname, COUNT(DISTINCT orderdetails.orderid) AS times_ordered,
+      DENSE_RANK() OVER 
+      (PARTITION BY customers.country 
+      ORDER BY COUNT(DISTINCT orderdetails.orderid) DESC) AS rank_num
+  FROM orderdetails
+  JOIN products ON products.productid = orderdetails.productid
+  JOIN orders ON orderdetails.orderid = orders.orderid
+  JOIN customers ON orders.customerid = customers.customerid
+  GROUP BY customers.country, products.productname
+  ORDER BY customers.country;
                     </code>
                   </pre>
                 </div>
@@ -219,23 +218,23 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT
-                        country_name, product_name, times_ordered
-                      FROM
-                      (
-                      SELECT 
-                        customers.country AS country_name, products.productname AS product_name, COUNT(DISTINCT orderdetails.orderid) AS times_ordered,
-                          DENSE_RANK() OVER (PARTITION BY customers.country ORDER BY COUNT(DISTINCT orderdetails.orderid) DESC) AS rank_num
-                      FROM orderdetails
-                      JOIN products ON products.productid = orderdetails.productid
-                      JOIN orders ON orderdetails.orderid = orders.orderid
-                      JOIN customers ON orders.customerid = customers.customerid
-                      GROUP BY customers.country, products.productname
-                      ) AS subquery
-                      WHERE rank_num = 1
-                      ORDER BY times_ordered DESC;
+  SELECT
+    country_name, product_name, times_ordered
+  FROM
+  (
+  SELECT 
+    customers.country AS country_name, products.productname AS product_name, COUNT(DISTINCT orderdetails.orderid) AS times_ordered,
+      DENSE_RANK() OVER (PARTITION BY customers.country ORDER BY COUNT(DISTINCT orderdetails.orderid) DESC) AS rank_num
+  FROM orderdetails
+  JOIN products ON products.productid = orderdetails.productid
+  JOIN orders ON orderdetails.orderid = orders.orderid
+  JOIN customers ON orders.customerid = customers.customerid
+  GROUP BY customers.country, products.productname
+  ) AS subquery
+  WHERE rank_num = 1
+  ORDER BY times_ordered DESC;
                     </code>
                   </pre>
                 </div>
@@ -252,20 +251,20 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT 
-                        DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) AS delivr_month,
-                          COUNT(DISTINCT CustomerID) AS new_regs
-                      FROM
-                        (
-                        SELECT
-                            CustomerID, MIN(OrderDate) AS first_order
-                        FROM orders
-                        GROUP BY CustomerID
-                        ) subquery
-                      GROUP BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1)
-                      ORDER BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) ASC;
+  SELECT 
+    DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) AS delivr_month,
+      COUNT(DISTINCT CustomerID) AS new_regs
+  FROM
+    (
+    SELECT
+        CustomerID, MIN(OrderDate) AS first_order
+    FROM orders
+    GROUP BY CustomerID
+    ) subquery
+  GROUP BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1)
+  ORDER BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) ASC;
                     </code>
                   </pre>
                 </div>
@@ -282,24 +281,24 @@
             <div class="answerpanel mt-4">
               <div class="card">
                 <div class="card-body">
-                  <pre class="editor">
+                  <pre class="editor language-sql">
                     <code>
-                      SELECT 
-                          delivr_month, 
-                          SUM(new_regs) OVER (ORDER BY delivr_month ASC) AS regs_rt
-                      FROM (
-                          SELECT 
-                              DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) AS delivr_month, 
-                              COUNT(DISTINCT CustomerID) AS new_regs
-                          FROM (
-                              SELECT 
-                                  CustomerID, MIN(OrderDate) AS first_order
-                              FROM orders
-                              GROUP BY CustomerID
-                          ) subquery
-                          GROUP BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1)
-                      ) subquery_two
-                      ORDER BY delivr_month ASC;
+  SELECT 
+      delivr_month, 
+      SUM(new_regs) OVER (ORDER BY delivr_month ASC) AS regs_rt
+  FROM (
+      SELECT 
+          DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1) AS delivr_month, 
+          COUNT(DISTINCT CustomerID) AS new_regs
+      FROM (
+          SELECT 
+              CustomerID, MIN(OrderDate) AS first_order
+          FROM orders
+          GROUP BY CustomerID
+      ) subquery
+      GROUP BY DATEFROMPARTS(YEAR(first_order), MONTH(first_order), 1)
+  ) subquery_two
+  ORDER BY delivr_month ASC;
                     </code>
                   </pre>
                 </div>
@@ -323,5 +322,10 @@
 <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
 
+
 </body>
 </html>
+
+
+
+

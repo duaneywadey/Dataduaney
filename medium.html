@@ -92,10 +92,10 @@
                 <div class="card-body text-left">
                   <pre class="editor">
                     <code>
-                      SELECT c.country AS Country, COUNT(*) AS OrderCount FROM orders o
-                      LEFT JOIN customers c ON o.customerid = c.customerid
-                      GROUP BY Country
-                      ORDER BY OrderCount DESC;
+  SELECT c.country AS Country, COUNT(*) AS OrderCount FROM orders o
+  LEFT JOIN customers c ON o.customerid = c.customerid
+  GROUP BY Country
+  ORDER BY OrderCount DESC;
                     </code>
                   </pre>
                 </div>
@@ -114,13 +114,13 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT 
-                        employees.firstname, employees.lastname,
-                        COUNT(DISTINCT orders.orderid) AS total_processed
-                      FROM employees
-                      LEFT JOIN orders ON employees.employeeid = orders.employeeid
-                      GROUP BY employees.firstname, employees.lastname
-                      ORDER BY COUNT(orders.orderid) DESC
+  SELECT 
+    employees.firstname, employees.lastname,
+    COUNT(DISTINCT orders.orderid) AS total_processed
+  FROM employees
+  LEFT JOIN orders ON employees.employeeid = orders.employeeid
+  GROUP BY employees.firstname, employees.lastname
+  ORDER BY COUNT(orders.orderid) DESC;
                     </code>
                   </pre>
                 </div>
@@ -139,12 +139,12 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT 
-                        DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS delivr_month,
-                          COUNT(DISTINCT OrderID) AS orders
-                      FROM orders
-                      GROUP BY DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)
-                      ORDER BY delivr_month ASC;
+  SELECT 
+    DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS delivr_month,
+      COUNT(DISTINCT OrderID) AS orders
+  FROM orders
+  GROUP BY DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)
+  ORDER BY delivr_month ASC;
                     </code>
                   </pre>
                 </div>
@@ -163,12 +163,12 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT 
-                        products.productname AS product_name, SUM(orderdetails.quantity) AS total_sold
-                      FROM orderdetails
-                      JOIN products ON orderdetails.productid = products.productid
-                      GROUP BY products.productname
-                      ORDER BY total_sold DESC;
+  SELECT 
+    products.productname AS product_name, SUM(orderdetails.quantity) AS total_sold
+  FROM orderdetails
+  JOIN products ON orderdetails.productid = products.productid
+  GROUP BY products.productname
+  ORDER BY total_sold DESC;
                     </code>
                   </pre>
                 </div>
@@ -187,9 +187,9 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT ProductName, Price 
-                      FROM Products
-                      WHERE Price < (SELECT AVG(Price) FROM Products);
+  SELECT ProductName, Price 
+  FROM Products
+  WHERE Price < (SELECT AVG(Price) FROM Products);
                     </code>
                   </pre>
                 </div>
@@ -208,15 +208,15 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT 
-                        customers.customername AS name, 
-                        customers.country AS country, 
-                        customers.city AS city, 
-                        COUNT(orders.orderid) AS total_orders
-                      FROM customers 
-                      LEFT JOIN orders ON orders.customerid = customers.customerid 
-                      GROUP BY customers.customername, customers.country, customers.city 
-                      HAVING COUNT(orders.orderid) = 0;
+  SELECT 
+    customers.customername AS name, 
+    customers.country AS country, 
+    customers.city AS city, 
+    COUNT(orders.orderid) AS total_orders
+  FROM customers 
+  LEFT JOIN orders ON orders.customerid = customers.customerid 
+  GROUP BY customers.customername, customers.country, customers.city 
+  HAVING COUNT(orders.orderid) = 0;
                     </code>
                   </pre>
                 </div>
@@ -235,14 +235,14 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT 
-                        DENSE_RANK() OVER(ORDER BY COUNT(DISTINCT OrderID) DESC) AS rank_num,
-                          Products.ProductName,
-                          Products.ProductID, 
-                          COUNT(DISTINCT OrderID) AS total_orders
-                      FROM OrderDetails
-                      JOIN Products ON OrderDetails.ProductID = Products.ProductID
-                      GROUP BY Products.ProductID, Products.ProductName;
+  SELECT 
+    DENSE_RANK() OVER(ORDER BY COUNT(DISTINCT OrderID) DESC) AS rank_num,
+      Products.ProductName,
+      Products.ProductID, 
+      COUNT(DISTINCT OrderID) AS total_orders
+  FROM OrderDetails
+  JOIN Products ON OrderDetails.ProductID = Products.ProductID
+  GROUP BY Products.ProductID, Products.ProductName;
                     </code>
                   </pre>
                 </div>
@@ -261,10 +261,10 @@
                 <div class="card-body">
                   <pre class="editor">
                     <code>
-                      SELECT
-                        CustomerID, MIN(OrderDate) AS first_order
-                      FROM orders
-                      GROUP BY CustomerID;
+  SELECT
+    CustomerID, MIN(OrderDate) AS first_order
+  FROM orders
+  GROUP BY CustomerID;
                     </code>
                   </pre>
                 </div>
